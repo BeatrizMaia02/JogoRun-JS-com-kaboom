@@ -11,6 +11,8 @@ kaboom({
 
 loadSprite("dog", "assets/WalkingDog.gif")
 
+
+scene("game", () => {
 setGravity(2400)
 
 const player = add([
@@ -22,7 +24,7 @@ const player = add([
  
 ])
 
-const JUMP_FORCE = 800
+const JUMP_FORCE = 810
 onKeyPress("space", () => {
     if (player.isGrounded()) {
         player.jump(JUMP_FORCE)
@@ -50,6 +52,7 @@ function spawnPObjects() {
         pos(player.pos.x + width(), floor.pos.y - 70),  // Ajuste a posição x para acompanhar o jogador e a posição y para ficar acima dele
         move(LEFT, 500),
         offscreen({ destroy: true }),
+        "object"
     ]);
 
     // Ajuste a velocidade de movimento dos objetos
@@ -59,3 +62,42 @@ function spawnPObjects() {
 }
 
 spawnPObjects();
+
+player.onCollide("object", () => {
+    // go to "lose" scene and pass the score
+    go("lose", score)
+})
+
+let score = 0
+
+const scoreLabel = add([
+    text(score),
+    pos(24, 24),
+])
+
+// increment score every frame
+onUpdate(() => {
+    score++
+    scoreLabel.text = score
+
+})
+
+})
+
+
+scene("lose", (score) => {
+
+	// display score
+	add([
+		text(score),
+		pos(width() / 2, height() / 2 + 80),
+		scale(2),
+	])
+
+	// go back to game with space is pressed
+	onKeyPress("space", () => go("game"))
+	onClick(() => go("game"))
+
+})
+
+go("game")
