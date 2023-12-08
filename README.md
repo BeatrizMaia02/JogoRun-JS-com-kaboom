@@ -1,2 +1,3 @@
 # JogoRun-JS-com-kaboom
-Em Desenvolvimento
+Jogo simples com a biblioteca Kaboom em javascript
+-> Em Desenvolvimento
